@@ -1,0 +1,336 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<graph>
+	<nodes>
+		<node name="freeway_1" />
+		<node name="freeway_2" />
+		<node name="freeway_3" />
+		<node name="freeway_4" />
+		<node name="freeway_5" />
+
+		<node name="first_a" />
+		<node name="first_b" />
+		<node name="first_c" />
+		<node name="first_d" />
+		<node name="first_e" />
+		<node name="first_f" />
+		<node name="first_g" />
+		<node name="first_h" />
+		<node name="first_i" />
+		<node name="first_j" />
+		
+		<node name="second_a" />
+		<node name="second_b" />
+		<node name="second_c" />
+		<node name="second_d" />
+		<node name="second_e" />
+		<node name="second_f" />
+		<node name="second_g" />
+		<node name="second_h" />
+		<node name="second_i" />
+		<node name="second_j" />
+		
+		<node name="third_a" />
+		<node name="third_b" />
+		<node name="third_c" />
+		<node name="third_d" />
+		<node name="third_e" />
+		<node name="third_f" />
+		<node name="third_g" />
+		<node name="third_h" />
+		<node name="third_i" />
+		<node name="third_j" />
+		
+		<node name="fourth_a" />
+		<node name="fourth_b" />
+		<node name="fourth_c" />
+		<node name="fourth_d" />
+		<node name="fourth_e" />
+		<node name="fourth_f" />
+		<node name="fourth_g" />
+		<node name="fourth_h" />
+		<node name="fourth_i" />
+		<node name="fourth_j" />
+		
+		<node name="fifth_a" />
+		<node name="fifth_b" />
+		<node name="fifth_c" />
+		<node name="fifth_d" />
+		<node name="fifth_e" />
+		<node name="fifth_f" />
+		<node name="fifth_g" />
+		<node name="fifth_h" />
+		<node name="fifth_i" />
+		<node name="fifth_j" />
+
+		<node name="sixth_a" />
+		<node name="sixth_b" />
+		<node name="sixth_c" />
+		<node name="sixth_d" />
+		<node name="sixth_e" />
+		<node name="sixth_f" />
+		<node name="sixth_g" />
+		<node name="sixth_h" />
+		<node name="sixth_i" />
+		<node name="sixth_j" />
+
+		<node name="seventh_a" />
+		<node name="seventh_b" />
+		<node name="seventh_c" />
+		<node name="seventh_d" />
+		<node name="seventh_e" />
+		<node name="seventh_f" />
+		<node name="seventh_g" />
+		<node name="seventh_h" />
+		<node name="seventh_i" />
+		<node name="seventh_j" />
+
+		<node name="eighth_a" />
+		<node name="eighth_b" />
+		<node name="eighth_c" />
+		<node name="eighth_d" />
+		<node name="eighth_e" />
+		<node name="eighth_f" />
+		<node name="eighth_g" />
+		<node name="eighth_h" />
+		<node name="eighth_i" />
+		<node name="eighth_j" />
+
+		<node name="ninth_a" />
+		<node name="ninth_b" />
+		<node name="ninth_c" />
+		<node name="ninth_d" />
+		<node name="ninth_e" />
+		<node name="ninth_f" />
+		<node name="ninth_g" />
+		<node name="ninth_h" />
+		<node name="ninth_i" />
+		<node name="ninth_j" />
+
+		<node name="tenth_a" />
+		<node name="tenth_b" />
+		<node name="tenth_c" />
+		<node name="tenth_d" />
+		<node name="tenth_e" />
+		<node name="tenth_f" />
+		<node name="tenth_g" />
+		<node name="tenth_h" />
+		<node name="tenth_i" />
+		<node name="tenth_j" />
+	</nodes>
+	<edges>
+		<edge start="first_a" end="first_b"  distance="1" rate="0.25" />
+		<edge start="first_b" end="first_c"  distance="1" rate="0.25" />
+		<edge start="first_c" end="first_d"  distance="1" rate="0.25" />
+		<edge start="first_d" end="first_e"  distance="1" rate="0.25" />
+		<edge start="first_e" end="first_f"  distance="1" rate="0.25" />
+		<edge start="first_f" end="first_g"  distance="1" rate="0.25" />
+		<edge start="first_g" end="first_h"  distance="1" rate="0.25" />
+		<edge start="first_h" end="first_i"  distance="1" rate="0.25" />
+		<edge start="first_i" end="first_j"  distance="1" rate="0.25" />
+
+		<edge start="first_a" end="second_a"  distance="1" rate="0.25" />
+		<edge start="first_b" end="second_b"  distance="1" rate="0.25" />
+		<edge start="first_c" end="second_c"  distance="1" rate="0.25" />
+		<edge start="first_d" end="second_d"  distance="1" rate="0.25" />
+		<edge start="first_e" end="second_e"  distance="1" rate="0.25" />
+		<edge start="first_f" end="second_f"  distance="1" rate="0.25" />
+		<edge start="first_g" end="second_g"  distance="1" rate="0.25" />
+		<edge start="first_h" end="second_h"  distance="1" rate="0.25" />
+		<edge start="first_i" end="second_i"  distance="1" rate="0.25" />
+		<edge start="first_j" end="second_j"  distance="1" rate="0.25" />
+
+		<edge start="second_a" end="second_b"  distance="1" rate="0.25" />
+		<edge start="second_b" end="second_c"  distance="1" rate="0.25" />
+		<edge start="second_c" end="second_d"  distance="1" rate="0.25" />
+		<edge start="second_d" end="second_e"  distance="1" rate="0.25" />
+		<edge start="second_e" end="second_f"  distance="1" rate="0.25" />
+		<edge start="second_f" end="second_g"  distance="1" rate="0.25" />
+		<edge start="second_g" end="second_h"  distance="1" rate="0.25" />
+		<edge start="second_h" end="second_i"  distance="1" rate="0.25" />
+		<edge start="second_i" end="second_j"  distance="1" rate="0.25" />
+
+		<edge start="second_a" end="third_a"  distance="1" rate="0.25" />
+		<edge start="second_b" end="third_b"  distance="1" rate="0.25" />
+		<edge start="second_c" end="third_c"  distance="1" rate="0.25" />
+		<edge start="second_d" end="third_d"  distance="1" rate="0.25" />
+		<edge start="second_e" end="third_e"  distance="1" rate="0.25" />
+		<edge start="second_f" end="third_f"  distance="1" rate="0.25" />
+		<edge start="second_g" end="third_g"  distance="1" rate="0.25" />
+		<edge start="second_h" end="third_h"  distance="1" rate="0.25" />
+		<edge start="second_i" end="third_i"  distance="1" rate="0.25" />
+		<edge start="second_j" end="third_j"  distance="1" rate="0.25" />
+
+		<edge start="third_a" end="third_b"  distance="1" rate="0.25" />
+		<edge start="third_b" end="third_c"  distance="1" rate="0.25" />
+		<edge start="third_c" end="third_d"  distance="1" rate="0.25" />
+		<edge start="third_d" end="third_e"  distance="1" rate="0.25" />
+		<edge start="third_e" end="third_f"  distance="1" rate="0.25" />
+		<edge start="third_f" end="third_g"  distance="1" rate="0.25" />
+		<edge start="third_g" end="third_h"  distance="1" rate="0.25" />
+		<edge start="third_h" end="third_i"  distance="1" rate="0.25" />
+		<edge start="third_i" end="third_j"  distance="1" rate="0.25" />
+
+		<edge start="third_a" end="fourth_a"  distance="1" rate="0.25" />
+		<edge start="third_b" end="fourth_b"  distance="1" rate="0.25" />
+		<edge start="third_c" end="fourth_c"  distance="1" rate="0.25" />
+		<edge start="third_d" end="fourth_d"  distance="1" rate="0.25" />
+		<edge start="third_e" end="fourth_e"  distance="1" rate="0.25" />
+		<edge start="third_f" end="fourth_f"  distance="1" rate="0.25" />
+		<edge start="third_g" end="fourth_g"  distance="1" rate="0.25" />
+		<edge start="third_h" end="fourth_h"  distance="1" rate="0.25" />
+		<edge start="third_i" end="fourth_i"  distance="1" rate="0.25" />
+		<edge start="third_j" end="fourth_j"  distance="1" rate="0.25" />
+
+		<edge start="fourth_a" end="fourth_b"  distance="1" rate="0.25" />
+		<edge start="fourth_b" end="fourth_c"  distance="1" rate="0.25" />
+		<edge start="fourth_c" end="fourth_d"  distance="1" rate="0.25" />
+		<edge start="fourth_d" end="fourth_e"  distance="1" rate="0.25" />
+		<edge start="fourth_e" end="fourth_f"  distance="1" rate="0.25" />
+		<edge start="fourth_f" end="fourth_g"  distance="1" rate="0.25" />
+		<edge start="fourth_g" end="fourth_h"  distance="1" rate="0.25" />
+		<edge start="fourth_h" end="fourth_i"  distance="1" rate="0.25" />
+		<edge start="fourth_i" end="fourth_j"  distance="1" rate="0.25" />
+
+		<edge start="fourth_a" end="fifth_a"  distance="1" rate="0.25" />
+		<edge start="fourth_b" end="fifth_b"  distance="1" rate="0.25" />
+		<edge start="fourth_c" end="fifth_c"  distance="1" rate="0.25" />
+		<edge start="fourth_d" end="fifth_d"  distance="1" rate="0.25" />
+		<edge start="fourth_e" end="fifth_e"  distance="1" rate="0.25" />
+		<edge start="fourth_f" end="fifth_f"  distance="1" rate="0.25" />
+		<edge start="fourth_g" end="fifth_g"  distance="1" rate="0.25" />
+		<edge start="fourth_h" end="fifth_h"  distance="1" rate="0.25" />
+		<edge start="fourth_i" end="fifth_i"  distance="1" rate="0.25" />
+		<edge start="fourth_j" end="fifth_j"  distance="1" rate="0.25" />
+
+		<edge start="fifth_a" end="fifth_b"  distance="1" rate="0.25" />
+		<edge start="fifth_b" end="fifth_c"  distance="1" rate="0.25" />
+		<edge start="fifth_c" end="fifth_d"  distance="1" rate="0.25" />
+		<edge start="fifth_d" end="fifth_e"  distance="1" rate="0.25" />
+		<edge start="fifth_e" end="fifth_f"  distance="1" rate="0.25" />
+		<edge start="fifth_f" end="fifth_g"  distance="1" rate="0.25" />
+		<edge start="fifth_g" end="fifth_h"  distance="1" rate="0.25" />
+		<edge start="fifth_h" end="fifth_i"  distance="1" rate="0.25" />
+		<edge start="fifth_i" end="fifth_j"  distance="1" rate="0.25" />
+
+		<!-- Ramps -->
+		<edge start="fifth_b" end="freeway_1"  distance="0.5" rate="0.20" />
+		<edge start="fifth_d" end="freeway_2"  distance="0.5" rate="0.20" />
+		<edge start="fifth_f" end="freeway_3"  distance="0.5" rate="0.20" />
+		<edge start="fifth_h" end="freeway_4"  distance="0.5" rate="0.20" />
+		<edge start="fifth_j" end="freeway_5"  distance="0.5" rate="0.20" />
+
+		<!-- Freeway -->
+		<edge start="freeway_1" end="freeway_2"  distance="2" rate="1.00" />
+		<edge start="freeway_2" end="freeway_3"  distance="2" rate="1.00" />
+		<edge start="freeway_3" end="freeway_4"  distance="2" rate="1.00" />
+		<edge start="freeway_4" end="freeway_5"  distance="2" rate="1.00" />
+
+		<!-- Ramps -->
+		<edge start="freeway_1" end="sixth_b"  distance="0.5" rate="0.20" />
+		<edge start="freeway_2" end="sixth_d"  distance="0.5" rate="0.20" />
+		<edge start="freeway_3" end="sixth_f"  distance="0.5" rate="0.20" />
+		<edge start="freeway_4" end="sixth_h"  distance="0.5" rate="0.20" />
+		<edge start="freeway_5" end="sixth_j"  distance="0.5" rate="0.20" />
+
+		<!-- Underpasses -->
+		<edge start="fifth_a" end="sixth_a"  distance="1" rate="0.25" />
+		<edge start="fifth_c" end="sixth_c"  distance="1" rate="0.25" />
+		<edge start="fifth_e" end="sixth_e"  distance="1" rate="0.25" />
+		<edge start="fifth_g" end="sixth_g"  distance="1" rate="0.25" />
+		<edge start="fifth_i" end="sixth_i"  distance="1" rate="0.25" />
+
+		<edge start="sixth_a" end="sixth_b"  distance="1" rate="0.25" />
+		<edge start="sixth_b" end="sixth_c"  distance="1" rate="0.25" />
+		<edge start="sixth_c" end="sixth_d"  distance="1" rate="0.25" />
+		<edge start="sixth_d" end="sixth_e"  distance="1" rate="0.25" />
+		<edge start="sixth_e" end="sixth_f"  distance="1" rate="0.25" />
+		<edge start="sixth_f" end="sixth_g"  distance="1" rate="0.25" />
+		<edge start="sixth_g" end="sixth_h"  distance="1" rate="0.25" />
+		<edge start="sixth_h" end="sixth_i"  distance="1" rate="0.25" />
+		<edge start="sixth_i" end="sixth_j"  distance="1" rate="0.25" />
+
+		<edge start="sixth_a" end="seventh_a"  distance="1" rate="0.25" />
+		<edge start="sixth_b" end="seventh_b"  distance="1" rate="0.25" />
+		<edge start="sixth_c" end="seventh_c"  distance="1" rate="0.25" />
+		<edge start="sixth_d" end="seventh_d"  distance="1" rate="0.25" />
+		<edge start="sixth_e" end="seventh_e"  distance="1" rate="0.25" />
+		<edge start="sixth_f" end="seventh_f"  distance="1" rate="0.25" />
+		<edge start="sixth_g" end="seventh_g"  distance="1" rate="0.25" />
+		<edge start="sixth_h" end="seventh_h"  distance="1" rate="0.25" />
+		<edge start="sixth_i" end="seventh_i"  distance="1" rate="0.25" />
+		<edge start="sixth_j" end="seventh_j"  distance="1" rate="0.25" />
+
+		<edge start="seventh_a" end="seventh_b"  distance="1" rate="0.25" />
+		<edge start="seventh_b" end="seventh_c"  distance="1" rate="0.25" />
+		<edge start="seventh_c" end="seventh_d"  distance="1" rate="0.25" />
+		<edge start="seventh_d" end="seventh_e"  distance="1" rate="0.25" />
+		<edge start="seventh_e" end="seventh_f"  distance="1" rate="0.25" />
+		<edge start="seventh_f" end="seventh_g"  distance="1" rate="0.25" />
+		<edge start="seventh_g" end="seventh_h"  distance="1" rate="0.25" />
+		<edge start="seventh_h" end="seventh_i"  distance="1" rate="0.25" />
+		<edge start="seventh_i" end="seventh_j"  distance="1" rate="0.25" />
+
+		<edge start="seventh_a" end="eighth_a"  distance="1" rate="0.25" />
+		<edge start="seventh_b" end="eighth_b"  distance="1" rate="0.25" />
+		<edge start="seventh_c" end="eighth_c"  distance="1" rate="0.25" />
+		<edge start="seventh_d" end="eighth_d"  distance="1" rate="0.25" />
+		<edge start="seventh_e" end="eighth_e"  distance="1" rate="0.25" />
+		<edge start="seventh_f" end="eighth_f"  distance="1" rate="0.25" />
+		<edge start="seventh_g" end="eighth_g"  distance="1" rate="0.25" />
+		<edge start="seventh_h" end="eighth_h"  distance="1" rate="0.25" />
+		<edge start="seventh_i" end="eighth_i"  distance="1" rate="0.25" />
+		<edge start="seventh_j" end="eighth_j"  distance="1" rate="0.25" />
+
+		<edge start="eighth_a" end="eighth_b"  distance="1" rate="0.25" />
+		<edge start="eighth_b" end="eighth_c"  distance="1" rate="0.25" />
+		<edge start="eighth_c" end="eighth_d"  distance="1" rate="0.25" />
+		<edge start="eighth_d" end="eighth_e"  distance="1" rate="0.25" />
+		<edge start="eighth_e" end="eighth_f"  distance="1" rate="0.25" />
+		<edge start="eighth_f" end="eighth_g"  distance="1" rate="0.25" />
+		<edge start="eighth_g" end="eighth_h"  distance="1" rate="0.25" />
+		<edge start="eighth_h" end="eighth_i"  distance="1" rate="0.25" />
+		<edge start="eighth_i" end="eighth_j"  distance="1" rate="0.25" />
+
+		<edge start="eighth_a" end="ninth_a"  distance="1" rate="0.25" />
+		<edge start="eighth_b" end="ninth_b"  distance="1" rate="0.25" />
+		<edge start="eighth_c" end="ninth_c"  distance="1" rate="0.25" />
+		<edge start="eighth_d" end="ninth_d"  distance="1" rate="0.25" />
+		<edge start="eighth_e" end="ninth_e"  distance="1" rate="0.25" />
+		<edge start="eighth_f" end="ninth_f"  distance="1" rate="0.25" />
+		<edge start="eighth_g" end="ninth_g"  distance="1" rate="0.25" />
+		<edge start="eighth_h" end="ninth_h"  distance="1" rate="0.25" />
+		<edge start="eighth_i" end="ninth_i"  distance="1" rate="0.25" />
+		<edge start="eighth_j" end="ninth_j"  distance="1" rate="0.25" />
+
+		<edge start="ninth_a" end="ninth_b"  distance="1" rate="0.25" />
+		<edge start="ninth_b" end="ninth_c"  distance="1" rate="0.25" />
+		<edge start="ninth_c" end="ninth_d"  distance="1" rate="0.25" />
+		<edge start="ninth_d" end="ninth_e"  distance="1" rate="0.25" />
+		<edge start="ninth_e" end="ninth_f"  distance="1" rate="0.25" />
+		<edge start="ninth_f" end="ninth_g"  distance="1" rate="0.25" />
+		<edge start="ninth_g" end="ninth_h"  distance="1" rate="0.25" />
+		<edge start="ninth_h" end="ninth_i"  distance="1" rate="0.25" />
+		<edge start="ninth_i" end="ninth_j"  distance="1" rate="0.25" />
+
+		<edge start="ninth_a" end="tenth_a"  distance="1" rate="0.25" />
+		<edge start="ninth_b" end="tenth_b"  distance="1" rate="0.25" />
+		<edge start="ninth_c" end="tenth_c"  distance="1" rate="0.25" />
+		<edge start="ninth_d" end="tenth_d"  distance="1" rate="0.25" />
+		<edge start="ninth_e" end="tenth_e"  distance="1" rate="0.25" />
+		<edge start="ninth_f" end="tenth_f"  distance="1" rate="0.25" />
+		<edge start="ninth_g" end="tenth_g"  distance="1" rate="0.25" />
+		<edge start="ninth_h" end="tenth_h"  distance="1" rate="0.25" />
+		<edge start="ninth_i" end="tenth_i"  distance="1" rate="0.25" />
+		<edge start="ninth_j" end="tenth_j"  distance="1" rate="0.25" />
+
+		<edge start="tenth_a" end="tenth_b"  distance="1" rate="0.25" />
+		<edge start="tenth_b" end="tenth_c"  distance="1" rate="0.25" />
+		<edge start="tenth_c" end="tenth_d"  distance="1" rate="0.25" />
+		<edge start="tenth_d" end="tenth_e"  distance="1" rate="0.25" />
+		<edge start="tenth_e" end="tenth_f"  distance="1" rate="0.25" />
+		<edge start="tenth_f" end="tenth_g"  distance="1" rate="0.25" />
+		<edge start="tenth_g" end="tenth_h"  distance="1" rate="0.25" />
+		<edge start="tenth_h" end="tenth_i"  distance="1" rate="0.25" />
+		<edge start="tenth_i" end="tenth_j"  distance="1" rate="0.25" />
+	</edges>
+</graph>
