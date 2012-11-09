@@ -24,10 +24,40 @@ namespace Infinigraph.Client
 		int FragmentShader;
 		int ShaderProgram;
 		int VertexBuffer;
-		int ColorBuffer;
+		int GrayColorBuffer;
+		int BlackColorBuffer;
 		int ElementBuffer;
 
-		Cube cube = new Cube();
+		Cube grayCube = new Cube(Color.Gray);
+
+		const float cameraMoveRate = 0.5f;
+		Vector3 CameraEye = new Vector3(0, 15, 5);
+		Vector3 CameraTarget = new Vector3(0, 0, 0);
+		Vector3 CameraUp = new Vector3(0, 1, 0);
+
+		uint[] BlackColors = new uint[]
+		{
+			0x00000000,
+			0x00000000,
+			0x00000000,
+			0x00000000,
+			0x00000000,
+			0x00000000,
+			0x00000000,
+			0x00000000,
+		};
+
+		uint[] GrayColors = new uint[]
+		{
+			0xFF888888,
+			0xFF888888,
+			0xFF888888,
+			0xFF888888,
+			0xFF888888,
+			0xFF888888,
+			0xFF888888,
+			0xFF888888,
+		};
 
 		public ClientWindow()
 			: base(800, 600)
@@ -39,9 +69,10 @@ namespace Infinigraph.Client
 			GL.ClearColor(Color.MidnightBlue);
 			GL.Enable(EnableCap.DepthTest);
 
-			VertexBuffer = CreateBuffer(BufferTarget.ArrayBuffer, cube.Vertices.Length * 3 * sizeof(float), cube.Vertices);
-			ColorBuffer = CreateBuffer(BufferTarget.ArrayBuffer, cube.Colors.Length * sizeof(int), cube.Colors);
-			ElementBuffer = CreateBuffer(BufferTarget.ElementArrayBuffer, cube.Indices.Length * sizeof(int), cube.Indices);
+			VertexBuffer = CreateBuffer(BufferTarget.ArrayBuffer, grayCube.Vertices.Length * 3 * sizeof(float), grayCube.Vertices);
+			GrayColorBuffer = CreateBuffer(BufferTarget.ArrayBuffer, GrayColors.Length * sizeof(uint), GrayColors);
+			BlackColorBuffer = CreateBuffer(BufferTarget.ArrayBuffer, BlackColors.Length * sizeof(uint), BlackColors);
+			ElementBuffer = CreateBuffer(BufferTarget.ElementArrayBuffer, grayCube.Indices.Length * sizeof(int), grayCube.Indices);
 
 			VertexShader = CreateShader(VertexShaderSource, ShaderType.VertexShader);
 			FragmentShader = CreateShader(FragmentShaderSource, ShaderType.FragmentShader);
@@ -114,8 +145,8 @@ namespace Infinigraph.Client
 			if(VertexBuffer != 0)
 				GL.DeleteBuffers(1, ref VertexBuffer);
 
-			if(ColorBuffer != 0)
-				GL.DeleteBuffers(1, ref ColorBuffer);
+			if(GrayColorBuffer != 0)
+				GL.DeleteBuffers(1, ref GrayColorBuffer);
 
 			if(ElementBuffer != 0)
 				GL.DeleteBuffers(1, ref ElementBuffer);
@@ -127,7 +158,7 @@ namespace Infinigraph.Client
 			GL.Viewport(0, 0, Width, Height);
 
 			float aspect_ratio = Width / (float)Height;
-			Matrix4 perpective = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, aspect_ratio, 1, 64);
+			Matrix4 perpective = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, aspect_ratio, 1, 512);
 			GL.MatrixMode(MatrixMode.Projection);
 			GL.LoadMatrix(ref perpective);
 		}
@@ -141,6 +172,40 @@ namespace Infinigraph.Client
 
 			if(Keyboard[OpenTK.Input.Key.F11])
 				WindowState = WindowState == OpenTK.WindowState.Fullscreen ? WindowState.Normal : WindowState.Fullscreen;
+
+			if(Keyboard[OpenTK.Input.Key.Left])
+			{
+				CameraEye.X -= cameraMoveRate;
+				CameraTarget.X -= cameraMoveRate;
+			}
+
+			if(Keyboard[OpenTK.Input.Key.Right])
+			{
+				CameraEye.X += cameraMoveRate;
+				CameraTarget.X += cameraMoveRate;
+			}
+
+			if(Keyboard[OpenTK.Input.Key.Up])
+			{
+				CameraEye.Z -= cameraMoveRate;
+				CameraTarget.Z -= cameraMoveRate;
+			}
+
+			if(Keyboard[OpenTK.Input.Key.Down])
+			{
+				CameraEye.Z += cameraMoveRate;
+				CameraTarget.Z += cameraMoveRate;
+			}
+
+			if(Keyboard[OpenTK.Input.Key.A] && CameraEye.Y > 1)
+			{
+				CameraEye.Y -= cameraMoveRate;
+			}
+
+			if(Keyboard[OpenTK.Input.Key.Z])
+			{
+				CameraEye.Y += cameraMoveRate;
+			}
 		}
 
 		// Place your rendering code here.
@@ -148,20 +213,36 @@ namespace Infinigraph.Client
 		{
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-			Matrix4 lookat = Matrix4.LookAt(0, 5, 5, 0, 0, 0, 0, 1, 0);
+			Matrix4 lookat = Matrix4.LookAt(CameraEye, CameraTarget, CameraUp);
 			GL.MatrixMode(MatrixMode.Modelview);
 			GL.LoadMatrix(ref lookat);
 
 			GL.EnableClientState(ArrayCap.VertexArray);
 			GL.EnableClientState(ArrayCap.ColorArray);
 
+			// Draw gray cubes
 			GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBuffer);
 			GL.VertexPointer(3, VertexPointerType.Float, 0, IntPtr.Zero);
-			GL.BindBuffer(BufferTarget.ArrayBuffer, ColorBuffer);
+	
+			GL.BindBuffer(BufferTarget.ArrayBuffer, GrayColorBuffer);
 			GL.ColorPointer(4, ColorPointerType.UnsignedByte, 0, IntPtr.Zero);
+			
 			GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBuffer);
 
-			GL.DrawElements(BeginMode.Triangles, cube.Indices.Length, DrawElementsType.UnsignedInt, IntPtr.Zero);
+			int width = 50;
+			int height = 50;
+
+			GL.Translate(-(width / 2), 0, -(height/ 2));
+
+			for(int x = 0; x < width; x++)
+			{
+				for(int z = 0; z < height; z++)
+				{
+					GL.DrawElements(BeginMode.Triangles, grayCube.Indices.Length, DrawElementsType.UnsignedInt, IntPtr.Zero);
+					GL.Translate(0, 0, 1);
+				}
+				GL.Translate(1, 0, -width);
+			}
 
 			GL.DisableClientState(ArrayCap.VertexArray);
 			GL.DisableClientState(ArrayCap.ColorArray);

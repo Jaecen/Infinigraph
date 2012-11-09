@@ -20,18 +20,18 @@ namespace Infinigraph.Client
 		public int[] Colors
 		{ get; protected set; }
 
-		public Cube()
+		public Cube(Color color)
 		{
 			Vertices = new Vector3[]
 			{
-				new Vector3(-1.0f, -1.0f,  1.0f),
-				new Vector3( 1.0f, -1.0f,  1.0f),
-				new Vector3( 1.0f,  1.0f,  1.0f),
-				new Vector3(-1.0f,  1.0f,  1.0f),
-				new Vector3(-1.0f, -1.0f, -1.0f),
-				new Vector3( 1.0f, -1.0f, -1.0f), 
-				new Vector3( 1.0f,  1.0f, -1.0f),
-				new Vector3(-1.0f,  1.0f, -1.0f)
+				new Vector3(-0.5f, -0.5f,  0.5f),	//LBT
+				new Vector3( 0.5f, -0.5f,  0.5f),	//RBT
+				new Vector3( 0.5f,  0.5f,  0.5f),	//RFT
+				new Vector3(-0.5f,  0.5f,  0.5f),	//LFT
+				new Vector3(-0.5f, -0.5f, -0.5f),	//LBB
+				new Vector3( 0.5f, -0.5f, -0.5f),	//RBB
+				new Vector3( 0.5f,  0.5f, -0.5f),	//RFB
+				new Vector3(-0.5f,  0.5f, -0.5f)	//LFB
 			};
 
 			Indices = new int[]
