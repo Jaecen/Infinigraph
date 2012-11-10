@@ -10,7 +10,42 @@ namespace Infinigraph.Client
 		const string VertexShaderSource = @"
 			void main()
 			{
-				gl_FrontColor = gl_Color;
+				vec3 normal, lightDir;
+				vec4 diffuse, specular, ambient, globalAmbient;
+				float NdotL, NdotHV;
+
+				/* first transform the normal into eye space and normalize the result */
+				normal = normalize(gl_NormalMatrix * gl_Normal);
+				
+				/* now normalize the light's direction. Note that according to the
+				OpenGL specification, the light is stored in eye space. Also since
+				we're talking about a directional light, the position field is actually
+				direction */
+				lightDir = normalize(vec3(gl_LightSource[0].position));
+
+				/* compute the cos of the angle between the normal and lights direction.
+				The light is directional so the direction is constant for every vertex.
+				Since these two are normalized the cosine is the dot product. We also
+				need to clamp the result to the [0,1] range. */
+				NdotL = max(dot(normal, lightDir), 0.0);
+
+				/* compute the specular term if NdotL is  larger than zero */
+				if (NdotL > 0.0) {
+					// normalize the half-vector, and then compute the
+					// cosine (dot product) with the normal
+					NdotHV = max(dot(normal, gl_LightSource[0].halfVector.xyz),0.0);
+					specular = gl_FrontMaterial.specular * gl_LightSource[0].specular *
+					pow(NdotHV,gl_FrontMaterial.shininess);
+				}
+
+				/* Compute the diffuse term */
+				diffuse = gl_FrontMaterial.diffuse * gl_LightSource[0].diffuse;
+
+				/* Compute the ambient and globalAmbient terms */
+				ambient = gl_FrontMaterial.ambient * gl_LightSource[0].ambient;
+				globalAmbient = gl_LightModel.ambient * gl_FrontMaterial.ambient;
+
+				gl_FrontColor =  NdotL * diffuse + globalAmbient + ambient;
 				gl_Position = ftransform();
 			}";
 
@@ -24,16 +59,20 @@ namespace Infinigraph.Client
 		int FragmentShader;
 		int ShaderProgram;
 		int VertexBuffer;
+		int NormalBuffer;
 		int GrayColorBuffer;
 		int BlackColorBuffer;
 		int ElementBuffer;
 
 		Cube grayCube = new Cube(Color.Gray);
 
-		const float cameraMoveRate = 0.5f;
+		const float cameraPanRate = 10f;
+		const float cameraZoomRate = 20f;
+		const float cameraRotateRate = (float)(40 * Math.PI);
 		Vector3 CameraEye = new Vector3(0, 15, 5);
 		Vector3 CameraTarget = new Vector3(0, 0, 0);
 		Vector3 CameraUp = new Vector3(0, 1, 0);
+		float CameraRotate = 0;
 
 		uint[] BlackColors = new uint[]
 		{
@@ -59,6 +98,10 @@ namespace Infinigraph.Client
 			0xFF888888,
 		};
 
+		const int GridWidth = 50;
+		const int GridHeight = 50;
+		float[,] GridY = new float[GridHeight, GridWidth];
+
 		public ClientWindow()
 			: base(800, 600)
 		{ }
@@ -70,6 +113,7 @@ namespace Infinigraph.Client
 			GL.Enable(EnableCap.DepthTest);
 
 			VertexBuffer = CreateBuffer(BufferTarget.ArrayBuffer, grayCube.Vertices.Length * 3 * sizeof(float), grayCube.Vertices);
+			NormalBuffer = CreateBuffer(BufferTarget.ArrayBuffer, grayCube.Normals.Length * 3 * sizeof(float), grayCube.Normals);
 			GrayColorBuffer = CreateBuffer(BufferTarget.ArrayBuffer, GrayColors.Length * sizeof(uint), GrayColors);
 			BlackColorBuffer = CreateBuffer(BufferTarget.ArrayBuffer, BlackColors.Length * sizeof(uint), BlackColors);
 			ElementBuffer = CreateBuffer(BufferTarget.ElementArrayBuffer, grayCube.Indices.Length * sizeof(int), grayCube.Indices);
@@ -77,6 +121,10 @@ namespace Infinigraph.Client
 			VertexShader = CreateShader(VertexShaderSource, ShaderType.VertexShader);
 			FragmentShader = CreateShader(FragmentShaderSource, ShaderType.FragmentShader);
 			ShaderProgram = CreateShaderProgram(VertexShader, FragmentShader);
+
+			for(int x = 0; x < GridWidth; x++)
+				for(int z = 0; z < GridHeight; z++)
+					GridY[x, z] = Noise.Generate(x / (float)GridWidth * 5, z / (float)GridHeight * 5) * 2;
 		}
 
 		int CreateShader(string shaderSource, ShaderType shaderType)
@@ -175,36 +223,46 @@ namespace Infinigraph.Client
 
 			if(Keyboard[OpenTK.Input.Key.Left])
 			{
-				CameraEye.X -= cameraMoveRate;
-				CameraTarget.X -= cameraMoveRate;
+				CameraEye.X -= (float)(e.Time * cameraPanRate);
+				CameraTarget.X -= (float)(e.Time * cameraPanRate);
 			}
 
 			if(Keyboard[OpenTK.Input.Key.Right])
 			{
-				CameraEye.X += cameraMoveRate;
-				CameraTarget.X += cameraMoveRate;
+				CameraEye.X += (float)(e.Time * cameraPanRate);
+				CameraTarget.X += (float)(e.Time * cameraPanRate);
 			}
 
 			if(Keyboard[OpenTK.Input.Key.Up])
 			{
-				CameraEye.Z -= cameraMoveRate;
-				CameraTarget.Z -= cameraMoveRate;
+				CameraEye.Z -= (float)(e.Time * cameraPanRate);
+				CameraTarget.Z -= (float)(e.Time * cameraPanRate);
 			}
 
 			if(Keyboard[OpenTK.Input.Key.Down])
 			{
-				CameraEye.Z += cameraMoveRate;
-				CameraTarget.Z += cameraMoveRate;
+				CameraEye.Z += (float)(e.Time * cameraPanRate);
+				CameraTarget.Z += (float)(e.Time * cameraPanRate);
 			}
 
 			if(Keyboard[OpenTK.Input.Key.A] && CameraEye.Y > 1)
 			{
-				CameraEye.Y -= cameraMoveRate;
+				CameraEye.Y -= (float)(e.Time * cameraZoomRate);
 			}
 
 			if(Keyboard[OpenTK.Input.Key.Z])
 			{
-				CameraEye.Y += cameraMoveRate;
+				CameraEye.Y += (float)(e.Time * cameraZoomRate);
+			}
+
+			if(Keyboard[OpenTK.Input.Key.Q])
+			{
+				CameraRotate += (float)(e.Time * cameraRotateRate);
+			}
+
+			if(Keyboard[OpenTK.Input.Key.E])
+			{
+				CameraRotate -= (float)(e.Time * cameraRotateRate);
 			}
 		}
 
@@ -216,35 +274,44 @@ namespace Infinigraph.Client
 			Matrix4 lookat = Matrix4.LookAt(CameraEye, CameraTarget, CameraUp);
 			GL.MatrixMode(MatrixMode.Modelview);
 			GL.LoadMatrix(ref lookat);
+			GL.Rotate(CameraRotate, CameraUp);
 
 			GL.EnableClientState(ArrayCap.VertexArray);
+			GL.EnableClientState(ArrayCap.NormalArray);
 			GL.EnableClientState(ArrayCap.ColorArray);
 
 			// Draw gray cubes
 			GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBuffer);
 			GL.VertexPointer(3, VertexPointerType.Float, 0, IntPtr.Zero);
-	
+
+			GL.BindBuffer(BufferTarget.ArrayBuffer, NormalBuffer);
+			GL.NormalPointer(NormalPointerType.Float, 0, IntPtr.Zero);
+
 			GL.BindBuffer(BufferTarget.ArrayBuffer, GrayColorBuffer);
 			GL.ColorPointer(4, ColorPointerType.UnsignedByte, 0, IntPtr.Zero);
 			
 			GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBuffer);
 
-			int width = 50;
-			int height = 50;
+			GL.Translate(-(GridWidth / 2), 0, -(GridHeight / 2));
 
-			GL.Translate(-(width / 2), 0, -(height/ 2));
+			float y = GridY[0, 0];
+			float lastY = y;
+			GL.Translate(0, y, 0);
 
-			for(int x = 0; x < width; x++)
+			for(int x = 0; x < GridWidth; x++)
 			{
-				for(int z = 0; z < height; z++)
+				for(int z = 0; z < GridHeight; z++)
 				{
+					y = GridY[x, z];
 					GL.DrawElements(BeginMode.Triangles, grayCube.Indices.Length, DrawElementsType.UnsignedInt, IntPtr.Zero);
-					GL.Translate(0, 0, 1);
+					GL.Translate(0, y - lastY, 1);
+					lastY = y;
 				}
-				GL.Translate(1, 0, -width);
+				GL.Translate(1, 0, -GridWidth);
 			}
 
 			GL.DisableClientState(ArrayCap.VertexArray);
+			GL.DisableClientState(ArrayCap.NormalArray);
 			GL.DisableClientState(ArrayCap.ColorArray);
 
 			SwapBuffers();
