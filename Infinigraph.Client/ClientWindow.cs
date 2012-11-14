@@ -2,6 +2,7 @@
 using OpenTK.Graphics.OpenGL;
 using System;
 using System.Drawing;
+using System.Linq;
 
 namespace Infinigraph.Client
 {
@@ -68,8 +69,8 @@ namespace Infinigraph.Client
 		const int GridHeight = 50;
 		Grid Grid = new Grid(
 			GridWidth,
-			GridHeight, 
-			(x, z) => Noise.Generate(x / (float)GridWidth * 5, z / (float)GridHeight * 5) * 2);
+			GridHeight,
+			(x, z) => Interesting.Hills(x, z, GridWidth, GridHeight, 3));
 
 		public ClientWindow()
 			: base(800, 600)

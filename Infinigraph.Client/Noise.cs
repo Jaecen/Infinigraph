@@ -1,4 +1,6 @@
-﻿namespace Infinigraph.Client
+﻿using System;
+using System.Linq;
+namespace Infinigraph.Client
 {
 	// Public domain from http://simplexnoise.googlecode.com/svn/trunk/SimplexNoise/Noise.cs
 
@@ -276,6 +278,31 @@
 			float v = h < 16 ? y : z;
 			float w = h < 8 ? z : t;
 			return ((h & 1) != 0 ? -u : u) + ((h & 2) != 0 ? -v : v) + ((h & 4) != 0 ? -w : w);
+		}
+	}
+
+	public static class Interesting
+	{
+		/// <summary>
+		/// Generates values that mimic rolling hills.
+		/// </summary>
+		/// <param name="x">The x coordinate to generate.</param>
+		/// <param name="y">The y coordinate to generate.</param>
+		/// <param name="width">The x units in the system.</param>
+		/// <param name="height">The y units in the system.</param>
+		/// <param name="volatility">
+		/// The severity of the change. 0 is perfectly flat. 1 is barely distinguishable from zero.
+		/// 2 is gentle rolling hills. 3 is hills with graduated holes and peaks. 4 becomes chaotic.
+		/// </param>
+		public static float Hills(int x, int y, int width, int height, int volatility)
+		{
+			return Enumerable.Range(0, volatility)
+				.Select(i =>
+					Noise.Generate(
+						(float)((double)x / (double)width * Math.Pow(2, i)),
+						(float)((double)y / (double)height * Math.Pow(2, i))
+					) * (float)(i + 1)
+				).Aggregate(1.0f, (v, a) => a * v);
 		}
 	}
 }
