@@ -12,58 +12,56 @@ namespace Infinigraph.Client
 	{
 		private readonly Vector3 CameraUp = new Vector3(0, 1, 0);
 
-		Matrix4 Delta = Matrix4.Identity;
+		Vector3 Target = Vector3.Zero;
 		float Rotation = 0;
+		float ZoomLevel = 15;
 
 		public void MoveForward(float distance)
 		{
-			Delta = Matrix4.Mult(Delta, Matrix4.CreateTranslation(0, 0, distance));
+			Target.X += (float)(Math.Cos(Rotation) * distance);
+			Target.Z += (float)(Math.Sin(Rotation) * distance);
 		}
 
 		public void MoveBackward(float distance)
 		{
-			Delta = Matrix4.Mult(Delta, Matrix4.CreateTranslation(0, 0, -distance));
+			Target.X -= (float)(Math.Cos(Rotation) * distance);
+			Target.Z -= (float)(Math.Sin(Rotation) * distance);
 		}
 
 		public void MoveLeft(float distance)
 		{
-			Delta = Matrix4.Mult(Delta, Matrix4.CreateTranslation(distance, 0, 0));
+			Target.X -= (float)(Math.Sin(-Rotation) * distance);
+			Target.Z -= (float)(Math.Cos(-Rotation) * distance);
 		}
 
 		public void MoveRight(float distance)
 		{
-			Delta = Matrix4.Mult(Delta, Matrix4.CreateTranslation(-distance, 0, 0));
+			Target.X += (float)(Math.Sin(-Rotation) * distance);
+			Target.Z += (float)(Math.Cos(-Rotation) * distance);
 		}
 
 		public void Zoom(float level)
 		{
-			//Location.Y -= level;
-
-			//if(Location.Y < 1)
-			//	Location.Y = 1;
+			ZoomLevel -= level;
+			
+			if(ZoomLevel < 2)
+				ZoomLevel = 2;
 		}
 
 		public void Rotate(float amount)
 		{
-			Rotation += amount;
+			Rotation -= amount;
 		}
 
 		public void Apply()
 		{
-			var target = Vector3.Transform(new Vector3(0, 0, 0), Delta);
-			var locationTrans = Matrix4.CreateTranslation(10 * (float)Math.Cos(Rotation), 0, 10 * (float)Math.Sin(Rotation));
-			var location = new Vector3(target.X - 5, 15, target.Y - 5);
+			var location = new Vector3(
+				Target.X + (float)(Math.Cos(Rotation + Math.PI) * 5),
+				ZoomLevel,
+				Target.Z + (float)(Math.Sin(Rotation + Math.PI) * 5));
 
-			var lookAt = Matrix4.LookAt(location, target, CameraUp);
-
-
-
+			var lookAt = Matrix4.LookAt(location, Target, CameraUp);
 			GL.LoadMatrix(ref lookAt);
-			
-			
-			//GL.Translate(location.X, 0, location.Z);
-			//GL.Rotate(Rotation, CameraUp);
-			//GL.Translate(-location.X, 0, -location.Z);
 		}
 	}
 }

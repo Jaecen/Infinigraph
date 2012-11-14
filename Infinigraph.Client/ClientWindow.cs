@@ -157,22 +157,22 @@ namespace Infinigraph.Client
 			if(Keyboard[OpenTK.Input.Key.F11])
 				WindowState = WindowState == OpenTK.WindowState.Fullscreen ? WindowState.Normal : WindowState.Fullscreen;
 
-			if(Keyboard[OpenTK.Input.Key.Left])
+			if(Keyboard[OpenTK.Input.Key.Left] || Keyboard[OpenTK.Input.Key.A])
 				Camera.MoveLeft((float)(e.Time * cameraPanRate));
 
-			if(Keyboard[OpenTK.Input.Key.Right])
+			if(Keyboard[OpenTK.Input.Key.Right] || Keyboard[OpenTK.Input.Key.D])
 				Camera.MoveRight((float)(e.Time * cameraPanRate));
 
-			if(Keyboard[OpenTK.Input.Key.Up])
+			if(Keyboard[OpenTK.Input.Key.Up] || Keyboard[OpenTK.Input.Key.W])
 				Camera.MoveForward((float)(e.Time * cameraPanRate));
 
-			if(Keyboard[OpenTK.Input.Key.Down])
+			if(Keyboard[OpenTK.Input.Key.Down] || Keyboard[OpenTK.Input.Key.S])
 				Camera.MoveBackward((float)(e.Time * cameraPanRate));
 
-			if(Keyboard[OpenTK.Input.Key.A])
+			if(Keyboard[OpenTK.Input.Key.R])
 				Camera.Zoom((float)(e.Time * cameraZoomRate));
 
-			if(Keyboard[OpenTK.Input.Key.Z])
+			if(Keyboard[OpenTK.Input.Key.F])
 				Camera.Zoom((float)(e.Time * -cameraZoomRate));
 
 			if(Keyboard[OpenTK.Input.Key.Q])
