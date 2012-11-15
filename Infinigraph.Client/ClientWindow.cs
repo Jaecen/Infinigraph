@@ -65,12 +65,14 @@ namespace Infinigraph.Client
 		const float cameraRotateRate = (float)(Math.PI / 2);
 		Camera Camera = new Camera();
 
-		const int GridWidth = 50;
-		const int GridHeight = 50;
-		Grid Grid = new Grid(
-			GridWidth,
-			GridHeight,
-			(x, z) => Interesting.Hills(x, z, GridWidth, GridHeight, 3));
+		Drawable Terrain = Create.Terrain();
+
+		//const int GridWidth = 50;
+		//const int GridHeight = 50;
+		//Drawable Terrain = Create.Grid(
+		//	GridWidth,
+		//	GridHeight,
+		//	(x, z) => Interesting.Hills(x, z, GridWidth, GridHeight, 3));
 
 		public ClientWindow()
 			: base(800, 600)
@@ -86,7 +88,7 @@ namespace Infinigraph.Client
 			FragmentShader = CreateShader(FragmentShaderSource, ShaderType.FragmentShader);
 			ShaderProgram = CreateShaderProgram(VertexShader, FragmentShader);
 
-			Grid.LoadBuffers();
+			Terrain.LoadBuffers();
 		}
 
 		int CreateShader(string shaderSource, ShaderType shaderType)
@@ -133,8 +135,8 @@ namespace Infinigraph.Client
 			if(VertexShader != 0)
 				GL.DeleteShader(VertexShader);
 
-			if(Grid != null)
-				Grid.DeleteBuffers();
+			if(Terrain != null)
+				Terrain.DeleteBuffers();
 		}
 
 		// Called when the user resizes the window. You want the OpenGL viewport to match the window. This is the place to do it!
@@ -171,10 +173,16 @@ namespace Infinigraph.Client
 				Camera.MoveBackward((float)(e.Time * cameraPanRate));
 
 			if(Keyboard[OpenTK.Input.Key.R])
-				Camera.Zoom((float)(e.Time * cameraZoomRate));
+				Camera.Tilt((float)(e.Time * cameraZoomRate));
 
 			if(Keyboard[OpenTK.Input.Key.F])
+				Camera.Tilt((float)(e.Time * -cameraZoomRate));
+
+			if(Keyboard[OpenTK.Input.Key.X])
 				Camera.Zoom((float)(e.Time * -cameraZoomRate));
+
+			if(Keyboard[OpenTK.Input.Key.Z])
+				Camera.Zoom((float)(e.Time * cameraZoomRate));
 
 			if(Keyboard[OpenTK.Input.Key.Q])
 				Camera.Rotate((float)(e.Time * cameraRotateRate));
@@ -194,8 +202,7 @@ namespace Infinigraph.Client
 			GL.EnableClientState(ArrayCap.ColorArray);
 
 			// Draw grid
-			Grid.BindBuffers();
-			Grid.DrawGrid();
+			Terrain.Draw();
 
 			Camera.Apply();
 

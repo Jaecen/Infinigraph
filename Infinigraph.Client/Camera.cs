@@ -10,7 +10,8 @@ namespace Infinigraph.Client
 
 		Vector3 Target = Vector3.Zero;
 		float Rotation = 0;
-		float ZoomLevel = 15;
+		float TiltLevel = 10;
+		float ZoomLevel = 5;
 
 		public void MoveForward(float distance)
 		{
@@ -36,6 +37,14 @@ namespace Infinigraph.Client
 			Target.Z += (float)(Math.Cos(-Rotation) * distance);
 		}
 
+		public void Tilt(float level)
+		{
+			TiltLevel -= level;
+
+			if(TiltLevel < 5)
+				TiltLevel = 5;
+		}
+
 		public void Zoom(float level)
 		{
 			ZoomLevel -= level;
@@ -52,9 +61,9 @@ namespace Infinigraph.Client
 		public void Apply()
 		{
 			var location = new Vector3(
-				Target.X + (float)(Math.Cos(Rotation + Math.PI) * 5),
+				Target.X + (float)(Math.Cos(Rotation + Math.PI) * TiltLevel),
 				ZoomLevel,
-				Target.Z + (float)(Math.Sin(Rotation + Math.PI) * 5));
+				Target.Z + (float)(Math.Sin(Rotation + Math.PI) * TiltLevel));
 
 			var lookAt = Matrix4.LookAt(location, Target, CameraUp);
 			GL.LoadMatrix(ref lookAt);

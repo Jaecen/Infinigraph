@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LibNoise">
+      <HintPath>..\packages\LibNoise.0.2\lib\NET45\LibNoise.dll</HintPath>
+    </Reference>
     <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\opentk_unoffical.1.1.788.3121\lib\OpenTK.dll</HintPath>
@@ -50,7 +53,8 @@
   <ItemGroup>
     <Compile Include="Camera.cs" />
     <Compile Include="ClientWindow.cs" />
-    <Compile Include="Grid.cs" />
+    <Compile Include="Drawable.cs" />
+    <Compile Include="Create.cs" />
     <Compile Include="Noise.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
