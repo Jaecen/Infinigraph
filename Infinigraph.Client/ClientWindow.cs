@@ -65,14 +65,7 @@ namespace Infinigraph.Client
 		const float cameraRotateRate = (float)(Math.PI / 2);
 		Camera Camera = new Camera();
 
-		Drawable Terrain = Create.Terrain();
-
-		//const int GridWidth = 50;
-		//const int GridHeight = 50;
-		//Drawable Terrain = Create.Grid(
-		//	GridWidth,
-		//	GridHeight,
-		//	(x, z) => Interesting.Hills(x, z, GridWidth, GridHeight, 3));
+		Drawable Terrain;
 
 		public ClientWindow()
 			: base(800, 600)
@@ -88,7 +81,30 @@ namespace Infinigraph.Client
 			FragmentShader = CreateShader(FragmentShaderSource, ShaderType.FragmentShader);
 			ShaderProgram = CreateShaderProgram(VertexShader, FragmentShader);
 
+			GenerateTerrain();
+
 			Terrain.LoadBuffers();
+		}
+
+		void GenerateTerrain()
+		{
+			int gridWidth = 10;
+			int gridHeight = 10;
+			int quadsPerUnit = 10;
+
+			var noiseMap = new LibNoise.Builder.NoiseMap();
+			var builder = new LibNoise.Builder.NoiseMapBuilderPlane();
+			builder.SourceModule = new LibNoise.Primitive.SimplexPerlin(10, LibNoise.NoiseQuality.Standard);
+			builder.NoiseMap = noiseMap;
+			builder.SetSize(gridWidth * quadsPerUnit, gridHeight * quadsPerUnit);
+			builder.SetBounds(0, gridWidth, 0, gridWidth);
+			builder.Build();
+
+			Terrain = Create.Terrain(
+				gridWidth,
+				gridHeight,
+				quadsPerUnit,
+				noiseMap.GetValue);
 		}
 
 		int CreateShader(string shaderSource, ShaderType shaderType)

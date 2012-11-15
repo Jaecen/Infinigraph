@@ -7,38 +7,24 @@ namespace Infinigraph.Client
 {
 	static class Create
 	{
-		public static Drawable Terrain()
+		public static Drawable Terrain(int width, int height, int quadsPerUnit, Func<int, int, float> yValue)
 		{
-			int width = 10;
-			int height = 10;
-
-			int gridFactor = 10;
-			
-			var noiseMap = new LibNoise.Builder.NoiseMap();
-			var builder = new LibNoise.Builder.NoiseMapBuilderPlane();
-			builder.SourceModule = new LibNoise.Primitive.SimplexPerlin(10, LibNoise.NoiseQuality.Standard);
-			builder.NoiseMap = noiseMap;
-			builder.SetSize(width * gridFactor, height * gridFactor);
-			builder.SetBounds(0, width, 0, height);
-			builder.Build();
-
 			uint indexBase = 0;
 			List<Vector3> vertices = new List<Vector3>();
 			List<Vector3> normals = new List<Vector3>();
 			List<uint> colors = new List<uint>();
 			List<uint> indices = new List<uint>();
 
-			// Take each strip of points and render a quad for each pair of pairs.
-			for(int x = 0; x < width * gridFactor - 1; x++)
+			for(int x = 0; x < width * quadsPerUnit - 1; x++)
 			{
-				for(int z = 0; z < height * gridFactor - 1; z++)
+				for(int z = 0; z < height * quadsPerUnit - 1; z++)
 				{
 					var v = new[]
 					{
-						new Vector3(x + 1, noiseMap.GetValue(x + 1, z + 1), z + 1),
-						new Vector3(x + 1, noiseMap.GetValue(x + 1, z + 0), z + 0),
-						new Vector3(x + 0, noiseMap.GetValue(x + 0, z + 0), z + 0),
-						new Vector3(x + 0, noiseMap.GetValue(x + 0, z + 1), z + 1),
+						new Vector3(x + 1, yValue(x + 1, z + 1), z + 1),
+						new Vector3(x + 1, yValue(x + 1, z + 0), z + 0),
+						new Vector3(x + 0, yValue(x + 0, z + 0), z + 0),
+						new Vector3(x + 0, yValue(x + 0, z + 1), z + 1),
 					};
 					vertices.AddRange(v);
 

@@ -55,7 +55,6 @@
     <Compile Include="ClientWindow.cs" />
     <Compile Include="Drawable.cs" />
     <Compile Include="Create.cs" />
-    <Compile Include="Noise.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Cube.cs" />
