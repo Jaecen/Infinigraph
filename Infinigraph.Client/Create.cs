@@ -7,7 +7,7 @@ namespace Infinigraph.Client
 {
 	static class Create
 	{
-		public static Drawable Terrain(int width, int height, int quadsPerUnit, Func<int, int, float> yValue)
+		public static Drawable Terrain(int width, int height, int quadsPerUnit, Func<int, int, float> yValue, uint color = 0xFF888888)
 		{
 			uint indexBase = 0;
 			List<Vector3> vertices = new List<Vector3>();
@@ -38,10 +38,10 @@ namespace Infinigraph.Client
 
 					colors.AddRange(new[]
 					{
-						0xFF888888,
-						0xFF888888,
-						0xFF888888,
-						0xFF888888,
+						color,
+						color,
+						color,
+						color,
 					});
 
 					indices.AddRange(new uint[] 
@@ -55,7 +55,6 @@ namespace Infinigraph.Client
 			}
 
 			return new Drawable(vertices.ToArray(), normals.ToArray(), colors.ToArray(), indices.ToArray());
-
 		}
 
 		public static Drawable Grid(int width, int height, Func<int, int, float> yValue)

@@ -3,6 +3,7 @@ using OpenTK.Graphics.OpenGL;
 using System;
 using System.Drawing;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Infinigraph.Client
 {
@@ -60,12 +61,8 @@ namespace Infinigraph.Client
 		int FragmentShader;
 		int ShaderProgram;
 
-		const float cameraPanRate = 10f;
-		const float cameraZoomRate = 20f;
-		const float cameraRotateRate = (float)(Math.PI / 2);
-		Camera Camera = new Camera();
-
-		Drawable Terrain;
+		Camera Camera = new Camera(10, 20, (float)(Math.PI / 2));
+		TerrainManager Terrain = new TerrainManager(10, 16);
 
 		public ClientWindow()
 			: base(800, 600)
@@ -80,31 +77,6 @@ namespace Infinigraph.Client
 			VertexShader = CreateShader(VertexShaderSource, ShaderType.VertexShader);
 			FragmentShader = CreateShader(FragmentShaderSource, ShaderType.FragmentShader);
 			ShaderProgram = CreateShaderProgram(VertexShader, FragmentShader);
-
-			GenerateTerrain();
-
-			Terrain.LoadBuffers();
-		}
-
-		void GenerateTerrain()
-		{
-			int gridWidth = 10;
-			int gridHeight = 10;
-			int quadsPerUnit = 10;
-
-			var noiseMap = new LibNoise.Builder.NoiseMap();
-			var builder = new LibNoise.Builder.NoiseMapBuilderPlane();
-			builder.SourceModule = new LibNoise.Primitive.SimplexPerlin(10, LibNoise.NoiseQuality.Standard);
-			builder.NoiseMap = noiseMap;
-			builder.SetSize(gridWidth * quadsPerUnit, gridHeight * quadsPerUnit);
-			builder.SetBounds(0, gridWidth, 0, gridWidth);
-			builder.Build();
-
-			Terrain = Create.Terrain(
-				gridWidth,
-				gridHeight,
-				quadsPerUnit,
-				noiseMap.GetValue);
 		}
 
 		int CreateShader(string shaderSource, ShaderType shaderType)
@@ -150,9 +122,6 @@ namespace Infinigraph.Client
 
 			if(VertexShader != 0)
 				GL.DeleteShader(VertexShader);
-
-			if(Terrain != null)
-				Terrain.DeleteBuffers();
 		}
 
 		// Called when the user resizes the window. You want the OpenGL viewport to match the window. This is the place to do it!
@@ -161,7 +130,7 @@ namespace Infinigraph.Client
 			GL.Viewport(0, 0, Width, Height);
 
 			float aspect_ratio = Width / (float)Height;
-			Matrix4 perpective = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, aspect_ratio, 1, 512);
+			Matrix4 perpective = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, aspect_ratio, 2, 128);
 			GL.MatrixMode(MatrixMode.Projection);
 			GL.LoadMatrix(ref perpective);
 		}
@@ -177,34 +146,36 @@ namespace Infinigraph.Client
 				WindowState = WindowState == OpenTK.WindowState.Fullscreen ? WindowState.Normal : WindowState.Fullscreen;
 
 			if(Keyboard[OpenTK.Input.Key.Left] || Keyboard[OpenTK.Input.Key.A])
-				Camera.MoveLeft((float)(e.Time * cameraPanRate));
+				Camera.MoveLeft((float)e.Time);
 
 			if(Keyboard[OpenTK.Input.Key.Right] || Keyboard[OpenTK.Input.Key.D])
-				Camera.MoveRight((float)(e.Time * cameraPanRate));
+				Camera.MoveRight((float)e.Time);
 
 			if(Keyboard[OpenTK.Input.Key.Up] || Keyboard[OpenTK.Input.Key.W])
-				Camera.MoveForward((float)(e.Time * cameraPanRate));
+				Camera.MoveForward((float)e.Time);
 
 			if(Keyboard[OpenTK.Input.Key.Down] || Keyboard[OpenTK.Input.Key.S])
-				Camera.MoveBackward((float)(e.Time * cameraPanRate));
+				Camera.MoveBackward((float)e.Time);
 
 			if(Keyboard[OpenTK.Input.Key.R])
-				Camera.Tilt((float)(e.Time * cameraZoomRate));
+				Camera.Tilt((float)e.Time);
 
 			if(Keyboard[OpenTK.Input.Key.F])
-				Camera.Tilt((float)(e.Time * -cameraZoomRate));
+				Camera.Tilt((float)-e.Time);
 
 			if(Keyboard[OpenTK.Input.Key.X])
-				Camera.Zoom((float)(e.Time * -cameraZoomRate));
+				Camera.Zoom((float)-e.Time);
 
 			if(Keyboard[OpenTK.Input.Key.Z])
-				Camera.Zoom((float)(e.Time * cameraZoomRate));
+				Camera.Zoom((float)e.Time);
 
 			if(Keyboard[OpenTK.Input.Key.Q])
-				Camera.Rotate((float)(e.Time * cameraRotateRate));
+				Camera.Rotate((float)e.Time);
 
 			if(Keyboard[OpenTK.Input.Key.E])
-				Camera.Rotate((float)(e.Time * -cameraRotateRate));
+				Camera.Rotate((float)-e.Time);
+
+			Terrain.UpdateTerrainCache(Camera.GetTarget());
 		}
 
 		// Place your rendering code here.
@@ -217,8 +188,8 @@ namespace Infinigraph.Client
 			GL.EnableClientState(ArrayCap.NormalArray);
 			GL.EnableClientState(ArrayCap.ColorArray);
 
-			// Draw grid
-			Terrain.Draw();
+			// Draw terrain
+			Terrain.DrawTerrain(Camera.GetTarget());
 
 			Camera.Apply();
 
