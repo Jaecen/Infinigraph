@@ -41,7 +41,8 @@ namespace Infinigraph.Client
 				}
 
 				/* Compute the diffuse term */
-				diffuse = gl_FrontMaterial.diffuse * gl_LightSource[0].diffuse;
+				/* diffuse = gl_FrontMaterial.diffuse * gl_LightSource[0].diffuse; */
+				diffuse = gl_Color * gl_LightSource[0].diffuse;;
 
 				/* Compute the ambient and globalAmbient terms */
 				ambient = gl_FrontMaterial.ambient * gl_LightSource[0].ambient;
@@ -62,11 +63,54 @@ namespace Infinigraph.Client
 		int ShaderProgram;
 
 		Camera Camera = new Camera(10, 20, (float)(Math.PI / 2));
-		TerrainManager Terrain = new TerrainManager(10, 16);
+		TerrainManager Terrain = new TerrainManager(10);
+		System.Diagnostics.Stopwatch TerrainStopwatch = new System.Diagnostics.Stopwatch();
 
 		public ClientWindow()
 			: base(800, 600)
-		{ }
+		{
+			this.TargetRenderFrequency = 60;
+			this.TargetUpdateFrequency = 30;
+
+
+			// ---------------- TEST --------------------------
+			/*
+			var src = new LibNoise.Primitive.SimplexPerlin(10, LibNoise.NoiseQuality.Standard); ;
+
+			var filter = new LibNoise.Filter.Pipe();
+			filter.Frequency = 10;
+			filter.Primitive3D = src;
+
+			var nb = new LibNoise.Builder.NoiseMapBuilderPlane();
+			nb.SourceModule = filter;
+
+			Action<float, float, float, float> q = (xLowBound, xHighBound, zLowBound, zHighBound) =>
+			{
+				// We need to read out one value per quad
+				var noiseMap = new LibNoise.Builder.NoiseMap();
+				nb.NoiseMap = noiseMap;
+				nb.SetSize(5, 5);
+				nb.SetBounds(xLowBound, xHighBound, zLowBound, zHighBound);
+				nb.Build();
+
+				for(int z = 0; z < 5; z++)
+					Console.Write("{0:0.00000000} ", noiseMap.GetValue(0, z));
+
+				Console.WriteLine();
+			};
+
+			q(0, 1, 0, 1);
+			q(1, 2, 0, 1);
+			q(2, 3, 0, 1);
+
+			Console.WriteLine();
+
+			q(0, 0.5f, 0, 1);
+			q(0.5f, 1, 0, 1);
+			q(1, 1.5f, 0, 1);
+			q(1.5f, 2, 0, 1);
+			*/
+		}
 
 		// This is the place to load resources that change little during the lifetime of the GameWindow. 
 		protected override void OnLoad(EventArgs e)
@@ -175,7 +219,9 @@ namespace Infinigraph.Client
 			if(Keyboard[OpenTK.Input.Key.E])
 				Camera.Rotate((float)-e.Time);
 
+			TerrainStopwatch.Restart();
 			Terrain.UpdateTerrainCache(Camera.GetTarget());
+			TerrainStopwatch.Stop();
 		}
 
 		// Place your rendering code here.
@@ -188,6 +234,8 @@ namespace Infinigraph.Client
 			GL.EnableClientState(ArrayCap.NormalArray);
 			GL.EnableClientState(ArrayCap.ColorArray);
 
+			GL.Light(LightName.Light0, LightParameter.Position, new Vector4(0, 20, 0, 1));
+
 			// Draw terrain
 			Terrain.DrawTerrain(Camera.GetTarget());
 
@@ -198,6 +246,11 @@ namespace Infinigraph.Client
 			GL.DisableClientState(ArrayCap.ColorArray);
 
 			SwapBuffers();
+
+			//Console.SetCursorPosition(0, 0);
+			//Console.WriteLine("TerrainCache\t{0:000} ms", TerrainStopwatch.ElapsedMilliseconds);
+			//Console.WriteLine("Render Time\t{0:000} ms {1:0.0} fps", RenderTime * 1000, 1 / RenderTime);
+			//Console.WriteLine("Update Time\t{0:000} ms {1:0.0} fps", UpdateTime * 1000, 1 / UpdateTime);
 		}
 	}
 }

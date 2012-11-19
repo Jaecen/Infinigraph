@@ -7,24 +7,36 @@ namespace Infinigraph.Client
 {
 	static class Create
 	{
-		public static Drawable Terrain(int width, int height, int quadsPerUnit, Func<int, int, float> yValue, uint color = 0xFF888888)
+		public static Drawable Terrain(int edgeSizeInTerrainUnits, int quadsPerTerrainUnit, float oglUnitsPerTerrainUnit, Func<int, int, float> yValue)
 		{
 			uint indexBase = 0;
-			List<Vector3> vertices = new List<Vector3>();
-			List<Vector3> normals = new List<Vector3>();
-			List<uint> colors = new List<uint>();
-			List<uint> indices = new List<uint>();
+			
+			var vertices = new List<Vector3>();
+			var normals = new List<Vector3>();
+			var colors = new List<uint>();
+			var indices = new List<uint>();
 
-			for(int x = 0; x < width * quadsPerUnit - 1; x++)
+			// Calculate edge size for each quad
+			float quadEdgeSizeInOglUnits = (oglUnitsPerTerrainUnit / quadsPerTerrainUnit);
+
+			for(int x = 0; x < edgeSizeInTerrainUnits * quadsPerTerrainUnit - 1; x++)
 			{
-				for(int z = 0; z < height * quadsPerUnit - 1; z++)
+				var xPlus = x + 1;
+				var xQuadEdge = x * quadEdgeSizeInOglUnits;
+				var xPlusQuadEdge = xPlus * quadEdgeSizeInOglUnits;
+
+				for(int z = 0; z < edgeSizeInTerrainUnits * quadsPerTerrainUnit - 1; z++)
 				{
+					var zPlus = z + 1;
+					var zQuadEdge = z * quadEdgeSizeInOglUnits;
+					var zPlusQuadEdge = zPlus * quadEdgeSizeInOglUnits;
+
 					var v = new[]
 					{
-						new Vector3(x + 1, yValue(x + 1, z + 1), z + 1),
-						new Vector3(x + 1, yValue(x + 1, z + 0), z + 0),
-						new Vector3(x + 0, yValue(x + 0, z + 0), z + 0),
-						new Vector3(x + 0, yValue(x + 0, z + 1), z + 1),
+						new Vector3(xPlusQuadEdge, yValue(xPlus, zPlus), zPlusQuadEdge),
+						new Vector3(xPlusQuadEdge, yValue(xPlus, z), zQuadEdge),
+						new Vector3(xQuadEdge, yValue(x, z), zQuadEdge),
+						new Vector3(xQuadEdge, yValue(x, zPlus), zPlusQuadEdge),
 					};
 					vertices.AddRange(v);
 
@@ -38,10 +50,10 @@ namespace Infinigraph.Client
 
 					colors.AddRange(new[]
 					{
-						color,
-						color,
-						color,
-						color,
+						0xFF880088 | (uint)((byte)0xFF * v[0].Y) << 8,
+						0xFF880088 | (uint)((byte)0xFF * v[1].Y) << 8,
+						0xFF880088 | (uint)((byte)0xFF * v[2].Y) << 8,
+						0xFF880088 | (uint)((byte)0xFF * v[3].Y) << 8,
 					});
 
 					indices.AddRange(new uint[] 
@@ -57,7 +69,7 @@ namespace Infinigraph.Client
 			return new Drawable(vertices.ToArray(), normals.ToArray(), colors.ToArray(), indices.ToArray());
 		}
 
-		public static Drawable Grid(int width, int height, Func<int, int, float> yValue)
+		public static Drawable BlockGrid(int width, int height, Func<int, int, float> yValue)
 		{
 			uint indexBase = 0;
 			List<Vector3> vertices = new List<Vector3>();
